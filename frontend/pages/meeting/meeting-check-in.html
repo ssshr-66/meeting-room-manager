@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议签到 - 智能会议室预约管理系统</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/components/modal.css">
+    <link rel="stylesheet" href="/styles/pages/meeting.css">
+</head>
+<body>
+    <header id="appHeader"></header>
+
+    <main class="page-container">
+        <a href="/pages/meeting/meeting-list.html" class="back-link">← 返回我的会议</a>
+
+        <div id="meetingHeader"></div>
+
+        <div class="signin-layout mt-md">
+            <!-- 签到 -->
+            <section class="card">
+                <h3 class="mb-md">📍 签到</h3>
+                <div id="signinPanel"></div>
+
+                <h4 class="mt-md mb-md">已签到人员</h4>
+                <div id="signinList" class="signin-list">
+                    <span class="text-tertiary">加载中...</span>
+                </div>
+            </section>
+
+            <!-- 纪要 -->
+            <section class="card">
+                <h3 class="mb-md">📝 会议纪要</h3>
+                <form id="minuteForm" class="mr-form mb-lg">
+                    <div class="mr-form__row">
+                        <input class="mr-input" type="text" name="title" placeholder="纪要标题" maxlength="128">
+                    </div>
+                    <div class="mr-form__row">
+                        <textarea class="mr-textarea" name="content" placeholder="纪要内容（最多 5000 字）" maxlength="5000"></textarea>
+                    </div>
+                    <div class="mr-form__row mr-form__row--inline">
+                        <input class="mr-input" type="text" name="attachmentName" placeholder="附件名称（如：周会纪要.pdf）" style="flex:1">
+                        <input class="mr-input" type="text" name="attachmentUrl" placeholder="附件 URL（mock）" style="flex:1">
+                    </div>
+                    <div class="flex-end">
+                        <button class="btn" type="submit">上传纪要</button>
+                    </div>
+                </form>
+
+                <div id="minuteList" class="minute-list">
+                    <span class="text-tertiary">加载中...</span>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/common/modal.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/reservation-api.js" defer></script>
+    <script src="/scripts/api/meeting-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
+    <script src="/scripts/pages/meeting-check-in.js" defer></script>
+</body>
+</html>

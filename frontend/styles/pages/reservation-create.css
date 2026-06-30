@@ -1,0 +1,48 @@
+/* 创建预约 */
+.reservation-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+@media (max-width: 900px) {
+    .reservation-layout { grid-template-columns: 1fr; }
+}
+.room-summary {
+    position: sticky;
+    top: 80px;
+}
+.room-summary__name {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+.room-summary__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-md);
+}
+.room-summary__equipments {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-bottom: var(--spacing-md);
+}
+.room-summary__schedule-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+.room-summary__schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.room-summary__schedule-item {
+    padding: 6px 10px;
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+}

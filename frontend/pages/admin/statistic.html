@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用统计 - 智能会议室预约管理后台</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/table.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/pages/admin-common.css">
+    <link rel="stylesheet" href="/styles/pages/admin-statistic.css">
+</head>
+<body>
+    <header id="appHeader"></header>
+
+    <main class="page-container page-container--wide">
+        <h2 class="page-title">使用统计</h2>
+        <p class="page-subtitle">会议室占用与使用率分析</p>
+
+        <div class="admin-toolbar">
+            <label class="text-secondary">统计周期：</label>
+            <select class="mr-select" id="periodSel">
+                <option value="day">今日</option>
+                <option value="week" selected>本周</option>
+                <option value="month">本月</option>
+            </select>
+            <button class="btn btn--ghost" id="refreshBtn">🔄 刷新</button>
+        </div>
+
+        <div class="stat-grid">
+            <section class="card">
+                <h3 class="mb-md">📊 会议室使用率</h3>
+                <div id="usageBars"></div>
+            </section>
+
+            <section class="card">
+                <h3 class="mb-md">🏆 热门会议室 TOP 10</h3>
+                <table class="mr-table" id="topTable">
+                    <thead>
+                        <tr><th>排名</th><th>会议室</th><th>占用 (小时)</th><th>预约次数</th></tr>
+                    </thead>
+                    <tbody><tr><td colspan="4" class="mr-table__empty">加载中...</td></tr></tbody>
+                </table>
+            </section>
+
+            <section class="card stat-grid__full">
+                <h3 class="mb-md">⏰ 各时段占用分布（0-23 时）</h3>
+                <div id="hourChart" class="hour-chart"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/statistic-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
+    <script src="/scripts/pages/admin-statistic.js" defer></script>
+</body>
+</html>

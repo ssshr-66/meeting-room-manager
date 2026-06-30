@@ -3,6 +3,52 @@ body {
     color: var(--color-text-primary);
     background-color: var(--color-bg);
     font-size: var(--font-size-md);
+    min-height: 100vh;
+}
+
+/* 主内容容器 */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+.page-container--wide {
+    max-width: 1400px;
+}
+
+/* 标题 */
+.page-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+.page-subtitle {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* 工具类 */
+.flex { display: flex; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-end { display: flex; justify-content: flex-end; align-items: center; gap: var(--spacing-sm); }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.mt-md { margin-top: var(--spacing-md); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.full-width { width: 100%; }
+
+/* 空态/加载态 */
+.state-block {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--color-text-tertiary);
+}
+.state-block__title {
+    font-size: var(--font-size-lg);
+    margin-bottom: 8px;
+    color: var(--color-text-secondary);
 }
 
 a {

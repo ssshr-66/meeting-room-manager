@@ -1,0 +1,70 @@
+/* 我的预约 / 通用状态 tab */
+.status-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    background: var(--color-bg-card);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    width: fit-content;
+}
+.status-tab {
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.status-tab:hover {
+    background: var(--color-bg);
+}
+.status-tab.is-active {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.res-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    border-left: 4px solid var(--color-primary);
+}
+.res-card--pending  { border-left-color: var(--color-warning); }
+.res-card--cancelled{ border-left-color: var(--color-text-tertiary); opacity: .7; }
+.res-card--completed{ border-left-color: var(--color-success); }
+.res-card--rejected { border-left-color: var(--color-danger); opacity: .8; }
+
+.res-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-sm);
+}
+.res-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+}
+.res-card__meta {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+.res-card__desc {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-sm);
+    margin: var(--spacing-sm) 0;
+    line-height: 1.6;
+}
+.res-card__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}

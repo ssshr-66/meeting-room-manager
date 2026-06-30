@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 智能会议室预约管理系统</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/pages/login.css">
+</head>
+<body>
+    <main class="auth-page">
+        <div class="auth-card">
+            <div class="auth-card__brand">
+                <span class="auth-card__logo">📅</span>
+                <h1 class="auth-card__title">智能会议室预约管理系统</h1>
+                <p class="auth-card__subtitle">请使用您的工号 / 用户名登录</p>
+            </div>
+
+            <form id="loginForm" class="mr-form" autocomplete="off">
+                <div class="mr-form__row">
+                    <label class="mr-form__label mr-form__label--required">用户名</label>
+                    <input class="mr-input" type="text" name="username" placeholder="请输入用户名" autocomplete="username">
+                </div>
+
+                <div class="mr-form__row">
+                    <label class="mr-form__label mr-form__label--required">密码</label>
+                    <input class="mr-input" type="password" name="password" placeholder="请输入密码" autocomplete="current-password">
+                </div>
+
+                <div class="mr-form__error" id="loginError"></div>
+
+                <button class="btn btn--block" type="submit" id="loginBtn">登录</button>
+            </form>
+
+            <div class="auth-card__footer">
+                <a href="/pages/user/register.html">没有账号？立即注册</a>
+                <a href="/">返回首页</a>
+            </div>
+
+            <div class="auth-card__tip">
+                <p>演示账号：</p>
+                <p><code>admin / admin123</code> — 管理员</p>
+                <p><code>alice / alice123</code> — 普通员工</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/auth-api.js" defer></script>
+    <script src="/scripts/pages/login.js" defer></script>
+</body>
+</html>

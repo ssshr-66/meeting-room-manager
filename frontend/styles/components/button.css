@@ -1,0 +1,36 @@
+/* 按钮：扩展 global.css 中 .btn */
+.btn--ghost {
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+}
+.btn--ghost:hover {
+    background: var(--color-bg);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+.btn--danger {
+    background: var(--color-danger);
+}
+.btn--danger:hover { background: #c0392b; }
+.btn--success {
+    background: var(--color-success);
+}
+.btn--success:hover { background: #239d62; }
+.btn--warn {
+    background: var(--color-warning);
+}
+.btn--warn:hover { background: #d99216; }
+.btn--small {
+    height: 28px;
+    padding: 0 10px;
+    font-size: var(--font-size-sm);
+}
+.btn--block {
+    width: 100%;
+}
+.btn-group {
+    display: inline-flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}

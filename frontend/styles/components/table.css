@@ -1,0 +1,51 @@
+/* 表格 */
+.mr-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    font-size: var(--font-size-md);
+}
+.mr-table thead {
+    background: var(--color-bg);
+}
+.mr-table th, .mr-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+}
+.mr-table th {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+}
+.mr-table tbody tr:hover {
+    background: rgba(79, 109, 245, 0.04);
+}
+.mr-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.mr-table__empty {
+    text-align: center;
+    padding: 48px;
+    color: var(--color-text-tertiary);
+}
+
+/* 状态徽章 */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    line-height: 1.6;
+}
+.tag--default { background: var(--color-bg); color: var(--color-text-secondary); }
+.tag--info    { background: rgba(75, 169, 255, 0.12); color: var(--color-info); }
+.tag--success { background: rgba(43, 182, 115, 0.12); color: var(--color-success); }
+.tag--warn    { background: rgba(245, 166, 35, 0.12); color: var(--color-warning); }
+.tag--danger  { background: rgba(231, 76, 60, 0.12);  color: var(--color-danger); }
+.tag--primary { background: rgba(79, 109, 245, 0.12); color: var(--color-primary); }

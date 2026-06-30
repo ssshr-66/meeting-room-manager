@@ -1,0 +1,69 @@
+/* 表单 */
+.mr-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+.mr-form__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+.mr-form__row--inline {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+.mr-form__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+.mr-form__label--required::after {
+    content: ' *';
+    color: var(--color-danger);
+}
+.mr-form__control,
+.mr-input,
+.mr-select,
+.mr-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-card);
+    transition: border-color var(--transition-fast);
+    font-size: var(--font-size-md);
+}
+.mr-textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-family: inherit;
+}
+.mr-input:focus, .mr-select:focus, .mr-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(79, 109, 245, 0.12);
+}
+.mr-form__help {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+.mr-form__error {
+    font-size: var(--font-size-xs);
+    color: var(--color-danger);
+    min-height: 16px;
+}
+
+.mr-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm) var(--spacing-md);
+}
+.mr-checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}

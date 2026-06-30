@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 智能会议室预约管理系统</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/components/modal.css">
+</head>
+<body>
+    <header id="appHeader"></header>
+
+    <main class="page-container">
+        <h2 class="page-title">个人中心</h2>
+
+        <div class="card mb-lg">
+            <h3 class="mb-md">基本信息</h3>
+            <form id="profileForm" class="mr-form">
+                <div class="mr-form__row mr-form__row--inline">
+                    <div style="flex:1">
+                        <label class="mr-form__label">用户名</label>
+                        <input class="mr-input" type="text" name="username" disabled>
+                    </div>
+                    <div style="flex:1">
+                        <label class="mr-form__label">工号</label>
+                        <input class="mr-input" type="text" name="employeeNo" disabled>
+                    </div>
+                </div>
+
+                <div class="mr-form__row mr-form__row--inline">
+                    <div style="flex:1">
+                        <label class="mr-form__label">昵称</label>
+                        <input class="mr-input" type="text" name="nickname">
+                    </div>
+                    <div style="flex:1">
+                        <label class="mr-form__label">邮箱</label>
+                        <input class="mr-input" type="email" name="email">
+                    </div>
+                </div>
+
+                <div class="mr-form__row mr-form__row--inline">
+                    <div style="flex:1">
+                        <label class="mr-form__label">手机号</label>
+                        <input class="mr-input" type="text" name="phone">
+                    </div>
+                    <div style="flex:1">
+                        <label class="mr-form__label">部门</label>
+                        <input class="mr-input" type="text" name="department">
+                    </div>
+                </div>
+
+                <div class="flex-end mt-md">
+                    <button class="btn" type="submit">保存修改</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3 class="mb-md">修改密码</h3>
+            <form id="pwdForm" class="mr-form" autocomplete="off">
+                <div class="mr-form__row">
+                    <label class="mr-form__label mr-form__label--required">原密码</label>
+                    <input class="mr-input" type="password" name="oldPassword">
+                </div>
+                <div class="mr-form__row">
+                    <label class="mr-form__label mr-form__label--required">新密码</label>
+                    <input class="mr-input" type="password" name="newPassword" placeholder="6-32 位">
+                </div>
+                <div class="mr-form__row">
+                    <label class="mr-form__label mr-form__label--required">确认新密码</label>
+                    <input class="mr-input" type="password" name="confirmPassword">
+                </div>
+                <div class="flex-end">
+                    <button class="btn" type="submit">修改密码</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/user-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
+    <script src="/scripts/pages/profile.js" defer></script>
+</body>
+</html>

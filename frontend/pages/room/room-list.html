@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议室列表 - 智能会议室预约管理系统</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/components/pagination.css">
+    <link rel="stylesheet" href="/styles/pages/room-list.css">
+</head>
+<body>
+    <header id="appHeader"></header>
+
+    <main class="page-container page-container--wide">
+        <div class="flex-between mb-md">
+            <div>
+                <h2 class="page-title" style="margin-bottom:0">会议室浏览</h2>
+                <p class="page-subtitle" style="margin-bottom:0">查找适合的会议室，按容量、楼层、设备筛选</p>
+            </div>
+            <a class="btn" href="/pages/reservation/reservation-create.html">+ 直接预约</a>
+        </div>
+
+        <!-- 筛选 -->
+        <div class="card filter-bar mb-md">
+            <div class="filter-bar__row">
+                <input class="mr-input" id="kwInput" type="text" placeholder="按名称搜索...">
+                <select class="mr-select" id="floorSel">
+                    <option value="">所有楼层</option>
+                </select>
+                <select class="mr-select" id="capSel">
+                    <option value="">不限容量</option>
+                    <option value="4">≥4 人</option>
+                    <option value="8">≥8 人</option>
+                    <option value="12">≥12 人</option>
+                    <option value="20">≥20 人</option>
+                    <option value="50">≥50 人</option>
+                </select>
+                <select class="mr-select" id="eqSel">
+                    <option value="">所有设备</option>
+                    <option value="投影仪">投影仪</option>
+                    <option value="视频会议">视频会议</option>
+                    <option value="白板">白板</option>
+                    <option value="音响">音响</option>
+                    <option value="同传设备">同传设备</option>
+                </select>
+                <select class="mr-select" id="viewSel">
+                    <option value="grid">卡片视图</option>
+                    <option value="calendar">日历视图</option>
+                </select>
+                <button class="btn btn--ghost" id="resetBtn">重置</button>
+            </div>
+        </div>
+
+        <!-- 网格视图 -->
+        <div id="gridView" class="room-grid"></div>
+
+        <!-- 日历视图 -->
+        <div id="calendarView" class="calendar-view" hidden>
+            <div class="calendar-view__head flex-between mb-md">
+                <div>
+                    <label class="mr-form__label">日期</label>
+                    <input class="mr-input" type="date" id="calDate" style="width: 180px">
+                </div>
+                <span class="text-tertiary">每行展示一个会议室全天 8-21 时段占用情况</span>
+            </div>
+            <div id="calendarBody"></div>
+        </div>
+
+        <div id="pagerBox"></div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/room-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
+    <script src="/scripts/components/pagination.js" defer></script>
+    <script src="/scripts/pages/room-list.js" defer></script>
+</body>
+</html>

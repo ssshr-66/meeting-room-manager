@@ -1,0 +1,28 @@
+/* 分页 */
+.mr-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+}
+.mr-pagination__btn {
+    padding: 6px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+.mr-pagination__btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+.mr-pagination__btn:disabled {
+    color: var(--color-text-tertiary);
+    cursor: not-allowed;
+}
+.mr-pagination__info {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议室管理 - 智能会议室预约管理后台</title>
+
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/form.css">
+    <link rel="stylesheet" href="/styles/components/table.css">
+    <link rel="stylesheet" href="/styles/components/modal.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/components/pagination.css">
+    <link rel="stylesheet" href="/styles/pages/admin-common.css">
+</head>
+<body>
+    <header id="appHeader"></header>
+
+    <main class="page-container page-container--wide">
+        <div class="flex-between mb-md">
+            <div>
+                <h2 class="page-title" style="margin-bottom:0">会议室管理</h2>
+                <p class="page-subtitle" style="margin-bottom:0">添加、编辑、停用会议室</p>
+            </div>
+            <button class="btn" id="addBtn">+ 新增会议室</button>
+        </div>
+
+        <div class="admin-toolbar">
+            <input class="mr-input" id="kwInput" type="text" placeholder="按名称搜索...">
+            <select class="mr-select" id="statusSel">
+                <option value="">所有状态</option>
+                <option value="1">可用</option>
+                <option value="0">停用</option>
+                <option value="2">维护中</option>
+            </select>
+            <button class="btn btn--ghost" id="resetBtn">重置</button>
+        </div>
+
+        <table class="mr-table">
+            <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>楼层</th>
+                    <th>容量</th>
+                    <th>设备</th>
+                    <th>需审批</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="roomTbody">
+                <tr><td colspan="7" class="mr-table__empty">加载中...</td></tr>
+            </tbody>
+        </table>
+
+        <div id="pagerBox"></div>
+    </main>
+
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/common/modal.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/room-api.js" defer></script>
+    <script src="/scripts/api/admin-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
+    <script src="/scripts/components/pagination.js" defer></script>
+    <script src="/scripts/pages/admin-room-manage.js" defer></script>
+</body>
+</html>

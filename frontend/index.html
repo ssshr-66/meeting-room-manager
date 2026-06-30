@@ -5,54 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能会议室预约管理系统</title>
 
-    <!-- 基础样式 -->
     <link rel="stylesheet" href="/styles/base/reset.css">
     <link rel="stylesheet" href="/styles/base/variables.css">
     <link rel="stylesheet" href="/styles/base/global.css">
-
-    <!-- 页面样式 -->
+    <link rel="stylesheet" href="/styles/components/button.css">
+    <link rel="stylesheet" href="/styles/components/header.css">
+    <link rel="stylesheet" href="/styles/components/notify.css">
+    <link rel="stylesheet" href="/styles/components/modal.css">
     <link rel="stylesheet" href="/styles/pages/index.css">
 </head>
 <body>
-    <main class="page-index">
-        <section class="card welcome-card">
-            <h1 class="welcome-card__title">智能会议室预约管理系统</h1>
-            <p class="welcome-card__subtitle">实训项目七 · 前后端分离骨架</p>
+    <header id="appHeader"></header>
 
-            <div class="status-block">
-                <div>
-                    <span class="status-block__label">后端 ping：</span>
-                    <span id="pingStatus" class="status-block__value status-block__value--pending">检测中...</span>
-                </div>
-                <div>
-                    <span class="status-block__label">服务名称：</span>
-                    <span id="appName" class="status-block__value status-block__value--pending">-</span>
-                </div>
-                <div>
-                    <span class="status-block__label">版本号：</span>
-                    <span id="appVersion" class="status-block__value status-block__value--pending">-</span>
-                </div>
-                <div>
-                    <span class="status-block__label">服务器时间：</span>
-                    <span id="serverTime" class="status-block__value status-block__value--pending">-</span>
-                </div>
+    <main class="page-home">
+        <section class="hero">
+            <h1 class="hero__title">智能会议室预约管理系统</h1>
+            <p class="hero__subtitle">在线预约、智能审批、会议签到、使用统计 —— 让会议资源更高效</p>
+            <div class="hero__actions" id="heroActions"></div>
+        </section>
+
+        <section class="home-grid">
+            <div class="card home-card">
+                <h3 class="home-card__title">📢 最新公告</h3>
+                <ul class="notice-list" id="noticeList">
+                    <li class="text-tertiary">加载中…</li>
+                </ul>
             </div>
 
-            <p class="text-tertiary" style="margin-top: var(--spacing-lg); font-size: var(--font-size-sm);">
-                如显示"失败"，请确认后端已启动：<br>
-                <code>cd backend &amp;&amp; mvn spring-boot:run</code>
-            </p>
+            <div class="card home-card">
+                <h3 class="home-card__title">🕒 即将到来的会议</h3>
+                <ul class="meeting-list" id="upcomingList">
+                    <li class="text-tertiary">登录后查看您的即将开始的会议</li>
+                </ul>
+            </div>
+
+            <div class="card home-card">
+                <h3 class="home-card__title">⚡ 快捷入口</h3>
+                <div class="quick-links">
+                    <a class="quick-link" href="/pages/room/room-list.html">🏢 浏览会议室</a>
+                    <a class="quick-link" href="/pages/reservation/my-reservations.html">📋 我的预约</a>
+                    <a class="quick-link" href="/pages/meeting/meeting-list.html">📝 我的会议</a>
+                    <a class="quick-link" href="/pages/user/profile.html">👤 个人中心</a>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- 公共脚本：严格按顺序加载 -->
+    <!-- 公共脚本（顺序固定）-->
     <script src="/scripts/common/constants.js" defer></script>
     <script src="/scripts/common/storage.js" defer></script>
     <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/common/format.js" defer></script>
+    <script src="/scripts/common/notify.js" defer></script>
+    <script src="/scripts/common/modal.js" defer></script>
     <script src="/scripts/api/request.js" defer></script>
-    <script src="/scripts/api/system-api.js" defer></script>
-
-    <!-- 页面脚本 -->
+    <script src="/scripts/api/auth-api.js" defer></script>
+    <script src="/scripts/api/user-api.js" defer></script>
+    <script src="/scripts/api/room-api.js" defer></script>
+    <script src="/scripts/api/reservation-api.js" defer></script>
+    <script src="/scripts/api/notice-api.js" defer></script>
+    <script src="/scripts/components/header.js" defer></script>
     <script src="/scripts/pages/index.js" defer></script>
 </body>
 </html>

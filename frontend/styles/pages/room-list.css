@@ -1,0 +1,128 @@
+/* 会议室列表 */
+.filter-bar__row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+@media (max-width: 900px) {
+    .filter-bar__row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+.room-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.room-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-sm);
+}
+.room-card__name {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+}
+.room-card__meta {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-sm);
+}
+.room-card__meta-item {
+    display: inline-block;
+    margin-right: 12px;
+}
+.room-card__equipments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: var(--spacing-md);
+}
+.room-card__equipments .tag {
+    font-size: 11px;
+}
+.room-card__desc {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: var(--spacing-md);
+}
+.room-card__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+}
+
+/* 日历视图 */
+.calendar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-md);
+    background: var(--color-bg-card);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-sm);
+    align-items: center;
+}
+.calendar-row__room-info .name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.calendar-row__room-info .meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+.calendar-row__timeline {
+    position: relative;
+    height: 40px;
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.timeline-axis {
+    position: absolute; inset: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+.timeline-axis span {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    padding: 2px 4px;
+}
+.timeline-slot {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.timeline-slot--pending { background: var(--color-warning); }
+.timeline-slot--inProgress { background: var(--color-success); }
