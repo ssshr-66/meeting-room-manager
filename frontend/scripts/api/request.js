@@ -117,10 +117,11 @@
 
     MR.Request = {
         request,
-        get:  (path, params, opts) => request(path, Object.assign({ method: 'GET',    params }, opts)),
-        post: (path, body,   opts) => request(path, Object.assign({ method: 'POST',   body   }, opts)),
-        put:  (path, body,   opts) => request(path, Object.assign({ method: 'PUT',    body   }, opts)),
-        del:  (path, params, opts) => request(path, Object.assign({ method: 'DELETE', params }, opts)),
+        // 便捷方法通过 this.request 调用，便于 mock 等场景一处 monkey-patch 即可生效
+        get(path, params, opts)  { return this.request(path, Object.assign({ method: 'GET',    params }, opts)); },
+        post(path, body, opts)   { return this.request(path, Object.assign({ method: 'POST',   body   }, opts)); },
+        put(path, body, opts)    { return this.request(path, Object.assign({ method: 'PUT',    body   }, opts)); },
+        del(path, params, opts)  { return this.request(path, Object.assign({ method: 'DELETE', params }, opts)); },
         RequestError,
     };
 })();
