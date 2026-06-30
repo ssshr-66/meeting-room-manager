@@ -1,0 +1,62 @@
+/* 全局基础样式 */
+body {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg);
+    font-size: var(--font-size-md);
+}
+
+a {
+    color: var(--color-primary);
+    transition: color var(--transition-fast);
+}
+a:hover { color: var(--color-primary-hover); }
+
+/* 容器 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* 卡片 */
+.card {
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+}
+
+/* 按钮（基础） */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 var(--spacing-md);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-md);
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    transition: background-color var(--transition-fast);
+}
+.btn:hover { background-color: var(--color-primary-hover); }
+.btn:disabled {
+    background-color: var(--color-text-tertiary);
+    cursor: not-allowed;
+}
+
+/* 文本工具类 */
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary  { color: var(--color-text-tertiary); }
+.text-success   { color: var(--color-success); }
+.text-danger    { color: var(--color-danger); }
+.text-center    { text-align: center; }
+
+/* 状态徽章占位 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    line-height: 1.6;
+}

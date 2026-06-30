@@ -1,0 +1,46 @@
+/* 首页样式 */
+.page-index {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+}
+
+.welcome-card {
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.welcome-card__title {
+    font-size: var(--font-size-xxl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.welcome-card__subtitle {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.status-block {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--font-size-sm);
+    text-align: left;
+}
+
+.status-block__label {
+    color: var(--color-text-tertiary);
+    margin-right: var(--spacing-sm);
+}
+
+.status-block__value--ok    { color: var(--color-success); font-weight: 600; }
+.status-block__value--fail  { color: var(--color-danger);  font-weight: 600; }
+.status-block__value--pending { color: var(--color-text-tertiary); }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能会议室预约管理系统</title>
+
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="/styles/base/reset.css">
+    <link rel="stylesheet" href="/styles/base/variables.css">
+    <link rel="stylesheet" href="/styles/base/global.css">
+
+    <!-- 页面样式 -->
+    <link rel="stylesheet" href="/styles/pages/index.css">
+</head>
+<body>
+    <main class="page-index">
+        <section class="card welcome-card">
+            <h1 class="welcome-card__title">智能会议室预约管理系统</h1>
+            <p class="welcome-card__subtitle">实训项目七 · 前后端分离骨架</p>
+
+            <div class="status-block">
+                <div>
+                    <span class="status-block__label">后端 ping：</span>
+                    <span id="pingStatus" class="status-block__value status-block__value--pending">检测中...</span>
+                </div>
+                <div>
+                    <span class="status-block__label">服务名称：</span>
+                    <span id="appName" class="status-block__value status-block__value--pending">-</span>
+                </div>
+                <div>
+                    <span class="status-block__label">版本号：</span>
+                    <span id="appVersion" class="status-block__value status-block__value--pending">-</span>
+                </div>
+                <div>
+                    <span class="status-block__label">服务器时间：</span>
+                    <span id="serverTime" class="status-block__value status-block__value--pending">-</span>
+                </div>
+            </div>
+
+            <p class="text-tertiary" style="margin-top: var(--spacing-lg); font-size: var(--font-size-sm);">
+                如显示"失败"，请确认后端已启动：<br>
+                <code>cd backend &amp;&amp; mvn spring-boot:run</code>
+            </p>
+        </section>
+    </main>
+
+    <!-- 公共脚本：严格按顺序加载 -->
+    <script src="/scripts/common/constants.js" defer></script>
+    <script src="/scripts/common/storage.js" defer></script>
+    <script src="/scripts/common/auth.js" defer></script>
+    <script src="/scripts/api/request.js" defer></script>
+    <script src="/scripts/api/system-api.js" defer></script>
+
+    <!-- 页面脚本 -->
+    <script src="/scripts/pages/index.js" defer></script>
+</body>
+</html>
