@@ -35,7 +35,8 @@
     /** 业务枚举（占位，后续按需扩充） */
     MR.Enums = Object.freeze({
         /** 用户角色 */
-        UserRole: Object.freeze({ USER: 'USER', ADMIN: 'ADMIN' }),
+        // 与后端 UserRoleEnum 保持一致：1=普通员工 / 2=管理员
+        UserRole: Object.freeze({ USER: 1, ADMIN: 2 }),
     });
 
 })();

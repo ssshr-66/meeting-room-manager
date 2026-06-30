@@ -1,8 +1,11 @@
 /**
  * 会议签到页：
- * - 头部展示会议信息
- * - 左：签到（组织者展示签到二维码，参会者展示手动签到按钮 + 已签到列表）
- * - 右：纪要上传 + 列表
+ * - 头部：会议信息（含 已签到/应到 实时统计）
+ * - 左：签到面板——参会人员列表，每人显示签到状态；当前登录用户行可点签到
+ * - 右：会议纪要 上传/列表/删除
+ *
+ * 注：本系统定位是「会议室排期管理」，签到表示「人员实际到达线下会议室」，
+ * 作为使用率与违约率统计依据。不提供视频会议/在线会议室功能。
  */
 (function () {
     'use strict';
@@ -10,7 +13,10 @@
     const state = {
         reservationId: null,
         reservation: null,
+        signins: [],
     };
+
+    /* ===== 头部 ===== */
 
     async function loadHeader() {
         try {
@@ -18,7 +24,13 @@
         } catch (e) {
             return MR.Notify.error('加载失败：' + (e.message || ''));
         }
+        renderHeader();
+    }
+
+    function renderHeader() {
         const r = state.reservation;
+        const expected = (r.attendees && r.attendees.length) || r.attendeeCount || 0;
+        const signed = state.signins.length;
         document.getElementById('meetingHeader').innerHTML = `
             <div class="card">
                 <div class="flex-between">
@@ -27,7 +39,8 @@
                         <div class="res-card__meta">
                             <span>🏢 ${MR.escapeHtml(r.roomName || '')}</span>
                             <span>🕒 ${MR.formatDate(r.startTime)} ~ ${MR.formatDate(r.endTime, 'HH:mm')}</span>
-                            <span>👥 ${r.attendeeCount} 人</span>
+                            <span>👥 应到 ${expected} 人</span>
+                            <span class="text-success">✅ 已到 ${signed} 人</span>
                             <span>${r.ownByMe ? '我创建' : '我参与'}</span>
                         </div>
                     </div>
@@ -36,83 +49,99 @@
                 ${r.description ? `<p class="res-card__desc">${MR.escapeHtml(r.description)}</p>` : ''}
             </div>
         `;
-
-        renderSigninPanel();
     }
+
+    /* ===== 签到面板（左侧） ===== */
 
     function renderSigninPanel() {
         const panel = document.getElementById('signinPanel');
-        if (state.reservation.ownByMe) {
-            // 组织者：展示二维码
-            panel.innerHTML = `
-                <div class="qrcode-card">
-                    <div id="qrcodeBox" class="qrcode-card__img" style="display:flex;align-items:center;justify-content:center;color:#aaa">
-                        <span>点击下方按钮生成二维码</span>
+        const r = state.reservation;
+        const me = MR.Auth.getUser();
+        const meId = me ? me.id : null;
+        const signMap = new Map(state.signins.map(s => [s.userId, s]));
+        const attendees = r.attendees || [];
+
+        // 当前用户是否在参会名单（含组织者）
+        const meInList = attendees.some(a => a.userId === meId);
+
+        const tipHtml = `
+            <div class="signin-tip">
+                💡 <strong>签到说明</strong>：本系统是会议室排期管理平台。
+                签到代表"人员实际到达<strong>线下会议室</strong>"，作为会议室使用率与违约率统计依据。
+            </div>
+        `;
+
+        const listHtml = attendees.length === 0
+            ? '<div class="text-tertiary text-center" style="padding:20px">本次会议没有指定参会人员</div>'
+            : attendees.map(a => {
+                const sign = signMap.get(a.userId);
+                const isMe = a.userId === meId;
+                return `
+                    <div class="attendee-row ${sign ? 'is-signed' : ''} ${isMe ? 'is-me' : ''}">
+                        <div class="attendee-row__avatar">${avatarChar(a.nickname)}</div>
+                        <div class="attendee-row__info">
+                            <div class="attendee-row__name">
+                                ${MR.escapeHtml(a.nickname)}
+                                ${a.isOrganizer ? '<span class="tag tag--primary" style="margin-left:6px;font-size:11px">组织者</span>' : ''}
+                                ${isMe ? '<span class="tag tag--info" style="margin-left:4px;font-size:11px">我</span>' : ''}
+                            </div>
+                            <div class="attendee-row__meta">
+                                ${MR.escapeHtml(a.department || '')}
+                                ${a.employeeNo ? '· 工号 ' + MR.escapeHtml(a.employeeNo) : ''}
+                            </div>
+                        </div>
+                        <div class="attendee-row__action">
+                            ${sign
+                                ? `<span class="text-success">✅ ${MR.formatDate(sign.signAt, 'HH:mm:ss')} 已签到</span>`
+                                : (isMe
+                                    ? `<button class="btn btn--small" data-act="signin" data-uid="${a.userId}">我要签到</button>`
+                                    : '<span class="text-tertiary">⏳ 未签到</span>')}
+                        </div>
                     </div>
-                    <div id="qrCodeTokenBox"></div>
-                    <button class="btn mt-md" id="genQrBtn">生成签到二维码</button>
-                    <button class="btn btn--ghost mt-md" id="manualBtn">作为组织者手动签到</button>
-                </div>
-            `;
-            document.getElementById('genQrBtn').addEventListener('click', generateQr);
-            document.getElementById('manualBtn').addEventListener('click', () => doSignin(2, null));
-        } else {
-            // 参会者：手动签到
-            panel.innerHTML = `
-                <div class="qrcode-card">
-                    <p class="text-secondary mb-md">请向组织者获取签到二维码扫码签到，或直接点击手动签到。</p>
-                    <button class="btn" id="manualBtn">手动签到</button>
-                </div>
-            `;
-            document.getElementById('manualBtn').addEventListener('click', () => doSignin(2, null));
-        }
+                `;
+            }).join('');
+
+        const meNotInListHtml = (!meInList && meId)
+            ? `<div class="signin-tip" style="margin-top:12px;background:#fff5f5;border-color:#ffd9d9;color:#c0392b">
+                  ⚠️ 您不在本次会议的参会名单中，无法签到。
+               </div>`
+            : '';
+
+        panel.innerHTML = tipHtml + '<div class="attendee-list">' + listHtml + '</div>' + meNotInListHtml;
+
+        // 绑定签到按钮
+        panel.querySelectorAll('[data-act="signin"]').forEach(btn => {
+            btn.addEventListener('click', () => onSignIn());
+        });
     }
 
-    async function generateQr() {
-        try {
-            const data = await MR.MeetingApi.qrcode(state.reservationId);
-            const box = document.getElementById('qrcodeBox');
-            // 使用 google chart api 简易生成（在线兜底）；离线场景占位
-            const encoded = encodeURIComponent(data.qrContent);
-            box.innerHTML = `<img alt="QR" style="max-width:100%;max-height:100%"
-                src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encoded}">`;
-            document.getElementById('qrCodeTokenBox').innerHTML = `
-                <div class="qrcode-card__token">Token: ${MR.escapeHtml(data.signToken).slice(0, 16)}... | 过期: ${MR.formatDate(new Date(data.expireAt))}</div>
-            `;
-            MR.Notify.success('二维码已生成（演示用，可手动签到验证）');
-        } catch (e) {
-            MR.Notify.error(e.message || '生成失败');
-        }
+    function avatarChar(name) {
+        if (!name) return '?';
+        return name.trim().charAt(0);
     }
 
-    async function doSignin(signType, signToken) {
+    async function onSignIn() {
         try {
-            await MR.MeetingApi.signIn(state.reservationId, signType, signToken);
+            await MR.MeetingApi.signIn(state.reservationId, 2, null);
             MR.Notify.success('签到成功');
-            loadSignins();
+            await loadSignins();
+            renderHeader();
+            renderSigninPanel();
         } catch (e) {
             MR.Notify.error(e.message || '签到失败');
         }
     }
 
     async function loadSignins() {
-        const box = document.getElementById('signinList');
         try {
-            const list = await MR.MeetingApi.listSignins(state.reservationId);
-            if (!list.length) {
-                box.innerHTML = '<span class="text-tertiary">暂无签到记录</span>';
-                return;
-            }
-            box.innerHTML = list.map(s => `
-                <div class="signin-item">
-                    <span>👤 ${MR.escapeHtml(s.userNickname || ('用户#' + s.userId))}</span>
-                    <span class="text-tertiary">${MR.escapeHtml(s.signTypeDesc)} · ${MR.formatDate(s.signAt)}</span>
-                </div>
-            `).join('');
+            state.signins = await MR.MeetingApi.listSignins(state.reservationId) || [];
         } catch (e) {
-            box.innerHTML = `<span class="text-danger">加载失败：${MR.escapeHtml(e.message || '')}</span>`;
+            state.signins = [];
+            console.warn('[signin] 加载失败', e);
         }
     }
+
+    /* ===== 纪要（右侧） ===== */
 
     async function onCreateMinute(e) {
         e.preventDefault();
@@ -175,19 +204,27 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    /* ===== 入口 ===== */
+
+    document.addEventListener('DOMContentLoaded', async () => {
         if (!MR.Auth.requireLogin()) return;
         MR.Header.render('appHeader', { active: 'meetings' });
 
         const id = MR.parseQuery().id;
         if (!id) {
-            document.querySelector('main').innerHTML = '<div class="state-block"><div class="state-block__title">缺少会议 ID</div></div>';
+            document.querySelector('main').innerHTML =
+                '<div class="state-block"><div class="state-block__title">缺少会议 ID</div></div>';
             return;
         }
         state.reservationId = Number(id);
-        loadHeader();
-        loadSignins();
+
+        // 先加载签到列表与会议详情，再渲染（确保头部统计准确）
+        await loadHeader();
+        await loadSignins();
+        renderHeader();
+        renderSigninPanel();
         loadMinutes();
+
         document.getElementById('minuteForm').addEventListener('submit', onCreateMinute);
     });
 })();

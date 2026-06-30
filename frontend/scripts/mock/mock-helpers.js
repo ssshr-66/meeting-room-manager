@@ -62,6 +62,21 @@
         const user = ctx.userMap.get(r.userId);
         const attendeeIds = !r.attendeeUserIds ? []
             : String(r.attendeeUserIds).split(',').map(s => s.trim()).filter(Boolean).map(Number);
+
+        // 富化"参会人员"列表（含组织者本人），用于签到页直接渲染
+        const idSet = new Set(attendeeIds);
+        idSet.add(r.userId);   // 组织者也算参会人
+        const attendees = [...idSet].map(uid => {
+            const u = ctx.userMap.get(uid);
+            return {
+                userId: uid,
+                nickname: u ? u.nickname : '用户#' + uid,
+                employeeNo: u ? u.employeeNo : null,
+                department: u ? u.department : null,
+                isOrganizer: uid === r.userId,
+            };
+        });
+
         return {
             id: r.id, userId: r.userId,
             userNickname: user ? user.nickname : null,
@@ -72,6 +87,7 @@
             title: r.title, description: r.description,
             attendeeCount: r.attendeeCount,
             attendeeUserIds: attendeeIds,
+            attendees,
             startTime: r.startTime, endTime: r.endTime,
             status: r.status, statusDesc: RES_DESC[r.status] || '',
             cancelReason: r.cancelReason,

@@ -42,6 +42,74 @@
     font-size: var(--font-size-sm);
 }
 
+/* 签到说明小卡片 */
+.signin-tip {
+    background: #eef4ff;
+    border: 1px solid #c9dbff;
+    color: #2c4f8a;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+}
+
+/* 参会人员列表 */
+.attendee-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+.attendee-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 10px 14px;
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+}
+.attendee-row.is-me {
+    background: #fff8e6;
+    border-color: #ffe1a3;
+}
+.attendee-row.is-signed {
+    background: #f0faf3;
+    border-color: #bfe5c8;
+}
+.attendee-row__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+.attendee-row.is-signed .attendee-row__avatar {
+    background: var(--color-success);
+}
+.attendee-row__info {
+    flex: 1;
+    min-width: 0;
+}
+.attendee-row__name {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.attendee-row__meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+.attendee-row__action {
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+}
+
 .minute-list {
     display: flex;
     flex-direction: column;

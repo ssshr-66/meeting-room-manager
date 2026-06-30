@@ -28,6 +28,14 @@
         return fmt(d);
     }
 
+    /** 当前时刻偏移 N 分钟 */
+    function nowOffset(minutes) {
+        const d = new Date();
+        d.setMinutes(d.getMinutes() + minutes);
+        d.setSeconds(0, 0);
+        return fmt(d);
+    }
+
     /** 初始数据生成器（每次 reset 调用） */
     function buildSeed() {
         const now = fmt(new Date());
@@ -89,10 +97,11 @@
               description: '新版本架构设计评审', attendeeCount: 8, attendeeUserIds: '2,3,4',
               startTime: at(2, 14, 0), endTime: at(2, 16, 0),
               status: 1, cancelReason: null, createdAt: at(-3, 16, 0), updatedAt: at(-3, 16, 0) },
-            // 进行中：今天 14:00 - 15:00（如果当前在这区间内）
-            { id: 4004, userId: 2, roomId: 104, title: '设计评审会',
-              description: '新版首页设计稿评审', attendeeCount: 4, attendeeUserIds: '2,4',
-              startTime: at(0, 14, 0), endTime: at(0, 15, 0),
+            // 进行中：当前时刻附近（前后各 1 小时），保证演示时一定可签到
+            { id: 4004, userId: 2, roomId: 104, title: '设计评审会（进行中 - 可签到演示）',
+              description: '新版首页设计稿评审 · 这条数据起止时间动态生成，保证演示时一定处于"会议进行中"状态',
+              attendeeCount: 4, attendeeUserIds: '2,3,4',
+              startTime: nowOffset(-60), endTime: nowOffset(60),
               status: 2, cancelReason: null, createdAt: at(-1, 9, 0), updatedAt: at(-1, 9, 0) },
             // 已完成：昨天
             { id: 4005, userId: 3, roomId: 101, title: '技术分享 - GraphQL',
@@ -166,9 +175,58 @@
         return { users, rooms, reservations, approvals, notices, signins, minutes };
     }
 
-    /** 暴露：DB（内存数据） + __reset / __seq（ID 自增） */
-    const state = buildSeed();
-    let seq = 100_000;   // 新增数据 ID 起点
+    /* ============== 持久化（localStorage） ==============
+     * 默认开启：业务操作（创建/修改/删除）后由 mock-router 自动调用 __save()
+     * 让数据跨页面跳转 / 刷新 / 关浏览器都保留，更贴近演示体验。
+     * 重置：MR.Mock.reset() → 清除存储并恢复初始数据。
+     */
+    const STORAGE_KEY = 'mr-mock-db-v1';
+    const SEQ_KEY = 'mr-mock-seq-v1';
+
+    function loadFromStorage() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return null;
+            const data = JSON.parse(raw);
+            if (!data || typeof data !== 'object') return null;
+            return data;
+        } catch (e) {
+            console.warn('[MockData] 读取 localStorage 失败，回退到种子数据', e);
+            return null;
+        }
+    }
+
+    function saveToStorage() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            localStorage.setItem(SEQ_KEY, String(seq));
+        } catch (e) {
+            console.warn('[MockData] 写入 localStorage 失败', e);
+        }
+    }
+
+    function clearStorage() {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SEQ_KEY);
+    }
+
+    /** 暴露：DB（内存数据） + __reset / __save / __seq（ID 自增） */
+    // 启动：优先从 localStorage 恢复，否则用种子数据初始化并写入
+    let state;
+    let seq;
+    const persisted = loadFromStorage();
+    if (persisted) {
+        state = persisted;
+        const savedSeq = parseInt(localStorage.getItem(SEQ_KEY) || '100000', 10);
+        seq = Number.isFinite(savedSeq) ? savedSeq : 100_000;
+        console.info('%c[MockData] 已从 localStorage 恢复 ' +
+            (state.reservations ? state.reservations.length : 0) + ' 条预约数据',
+            'color:#2bb673');
+    } else {
+        state = buildSeed();
+        seq = 100_000;
+        saveToStorage();
+    }
 
     MR.MockData = {
         get users()         { return state.users; },
@@ -182,7 +240,7 @@
         /** 取下一个 ID（用于 insert） */
         nextId() { return ++seq; },
 
-        /** 重置为初始种子数据 */
+        /** 重置为初始种子数据（并清除 localStorage） */
         __reset() {
             const fresh = buildSeed();
             state.users        = fresh.users;
@@ -193,7 +251,12 @@
             state.signins      = fresh.signins;
             state.minutes      = fresh.minutes;
             seq = 100_000;
+            clearStorage();
+            saveToStorage();
         },
+
+        /** 持久化到 localStorage（mock-router 在写操作后自动调用） */
+        __save: saveToStorage,
 
         /** 工具：克隆，避免对外暴露内部引用 */
         clone(o) { return JSON.parse(JSON.stringify(o)); },

@@ -24,9 +24,23 @@
         const originalRequest = MR.Request.request;
 
         // 编译所有已注册路由的 path pattern
-        const compiled = MR.Mock.routes.map(r => Object.assign({}, r, {
-            compiled: H.compilePattern(r.pattern),
-        }));
+        // 排序：静态段（不含 :param）多的优先；总长度长的优先；
+        // 避免 `/reservations/:id` 误匹中 `/reservations/my` 这类问题。
+        const compiled = MR.Mock.routes.map(r => {
+            const segs = r.pattern.split('/').filter(Boolean);
+            const dyn = segs.filter(s => s.startsWith(':')).length;
+            const stat = segs.length - dyn;
+            return Object.assign({}, r, {
+                compiled: H.compilePattern(r.pattern),
+                _staticSegs: stat,
+                _dynamicSegs: dyn,
+                _len: r.pattern.length,
+            });
+        }).sort((a, b) => {
+            if (b._staticSegs !== a._staticSegs) return b._staticSegs - a._staticSegs; // 静态段多的优先
+            if (a._dynamicSegs !== b._dynamicSegs) return a._dynamicSegs - b._dynamicSegs; // 动态段少的优先
+            return b._len - a._len; // 路径长的优先
+        });
 
         MR.Request.request = async function (path, options) {
             if (!MR.Mock.enabled) {
@@ -71,6 +85,10 @@
 
             try {
                 const data = await matched.route.handler(ctx);
+                // 写操作后自动持久化（GET 不持久化以节省 IO）
+                if (method !== 'GET' && typeof MR.MockData.__save === 'function') {
+                    MR.MockData.__save();
+                }
                 return data;
             } catch (e) {
                 if (e && e.name === 'RequestError') throw e;
