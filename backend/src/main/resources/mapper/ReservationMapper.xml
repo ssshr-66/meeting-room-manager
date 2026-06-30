@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhs.meetingroom.mapper.ReservationMapper">
+
+    <resultMap id="ReservationMap" type="com.xhs.meetingroom.entity.Reservation">
+        <id     column="id"                  property="id"/>
+        <result column="user_id"             property="userId"/>
+        <result column="room_id"             property="roomId"/>
+        <result column="title"               property="title"/>
+        <result column="description"         property="description"/>
+        <result column="attendee_count"      property="attendeeCount"/>
+        <result column="attendee_user_ids"   property="attendeeUserIds"/>
+        <result column="start_time"          property="startTime"/>
+        <result column="end_time"            property="endTime"/>
+        <result column="status"              property="status"/>
+        <result column="cancel_reason"       property="cancelReason"/>
+        <result column="created_at"          property="createdAt"/>
+        <result column="updated_at"          property="updatedAt"/>
+        <result column="deleted"             property="deleted"/>
+        <result column="version"             property="version"/>
+    </resultMap>
+
+    <!-- 时段冲突检测：
+         未取消、未驳回、未删除 的预约，
+         与给定区间 [startTime, endTime) 存在交集 -->
+    <select id="selectConflicts" resultMap="ReservationMap">
+        SELECT id, user_id, room_id, title, description, attendee_count, attendee_user_ids,
+               start_time, end_time, status, cancel_reason, created_at, updated_at, deleted, version
+        FROM t_reservation
+        WHERE deleted = 0
+          AND room_id = #{roomId}
+          AND status IN (0, 1, 2) <!-- 待审批 / 已通过 / 进行中 -->
+          AND NOT (end_time &lt;= #{startTime} OR start_time &gt;= #{endTime})
+          <if test="excludeId != null">AND id &lt;&gt; #{excludeId}</if>
+    </select>
+
+    <!-- 时间范围内 各会议室占用总分钟数 -->
+    <select id="statRoomUsageHours" resultType="map">
+        SELECT r.id              AS roomId,
+               r.name            AS roomName,
+               COALESCE(SUM(TIMESTAMPDIFF(MINUTE, res.start_time, res.end_time)), 0) AS totalMinutes,
+               COUNT(res.id)     AS reservationCount
+        FROM t_room r
+        LEFT JOIN t_reservation res
+               ON res.room_id = r.id
+              AND res.deleted = 0
+              AND res.status IN (1, 2, 3)  <!-- 已通过 / 进行中 / 已完成 -->
+              AND res.start_time &gt;= #{startDate}
+              AND res.start_time &lt;  #{endDate}
+        WHERE r.deleted = 0
+        GROUP BY r.id, r.name
+        ORDER BY totalMinutes DESC
+    </select>
+
+    <!-- 时段（小时）分布：按起始小时归桶 -->
+    <select id="statHourlyDistribution" resultType="map">
+        SELECT HOUR(start_time) AS hour, COUNT(*) AS cnt
+        FROM t_reservation
+        WHERE deleted = 0
+          AND status IN (1, 2, 3)
+          AND start_time &gt;= #{startDate}
+          AND start_time &lt;  #{endDate}
+        GROUP BY HOUR(start_time)
+        ORDER BY hour
+    </select>
+
+</mapper>
