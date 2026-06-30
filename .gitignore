@@ -1,0 +1,43 @@
+# ============= 通用 =============
+.DS_Store
+*.log
+logs/
+
+# ============= IDE =============
+.idea/
+*.iml
+*.iws
+.vscode/
+*.swp
+
+# ============= 后端 / Java =============
+target/
+build/
+out/
+*.class
+hs_err_pid*
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot
+spring-boot-*.log
+HELP.md
+
+# ============= 前端 =============
+node_modules/
+dist/
+
+# ============= Docker / 数据 =============
+mysql-data/
+*.sqlite
+*.db
+
+# ============= 环境敏感 =============
+.env
+.env.local
+application-local.yml
+application-secret.yml

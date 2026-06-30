@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/meeting_room_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# 业务自定义（后续 JWT、文件上传等放这里）
+app:
+  jwt:
+    secret: dev-meeting-room-jwt-secret-please-change-in-prod-1234567890
+    expire-minutes: 1440   # 24 小时
+    issuer: meeting-room
